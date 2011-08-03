@@ -21,9 +21,9 @@ def live():
 
 def upload():
     """
-    Upload static files to the server. Note that $HOME for the lastpage
-    user on lastpage.me is /srv/lastpage, so all put() have that as their
-    cwd.
+    Upload deployment files to the server. Note that $HOME for the lastpage
+    user on lastpage.me is /srv/lastpage, so all calls to put() have that
+    as their cwd.
     """
     require('hosts', provided_by=[live])
 
