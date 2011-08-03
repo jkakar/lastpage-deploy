@@ -20,6 +20,7 @@ LASTPAGE_USER=lastpage
 
 exec /sbin/start-stop-daemon --start --chdir $VIRTUALENV_HOME \
     --chuid $LASTPAGE_USER --exec $VIRTUALENV_HOME/bin/twistd -- \
-    --port 11111 \
     --pidfile=/srv/lastpage/current/var/run/lastpage.pid \
-    --logfile=/srv/lastpage/current/var/log/lastpage.log lastpage
+    --logfile=/srv/lastpage/current/var/log/lastpage.log \
+    lastpage \
+    --port 11111
