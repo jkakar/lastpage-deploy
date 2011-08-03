@@ -1,0 +1,12 @@
+Note: this branch is uploaded onto our deployment machine and unpacked in
+the same place the lastpage-server branch is unpacked. So be careful not to
+clobber anything!  (That's the reason this file is called README.deploy.)
+
+And yes, of course that's a sub-optimal approach. Packaging and properly
+installing lastpage-server is non-trivial, AFAICT.
+
+---
+
+To create the lastpage user on the deploy machine:
+
+$ sudo adduser --home /srv/lastpage --disabled-password --disabled-login lastpage
