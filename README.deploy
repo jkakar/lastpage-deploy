@@ -1,9 +1,14 @@
-Note: this branch is uploaded onto our deployment machine and unpacked in
-the same place the lastpage-server branch is unpacked. So be careful not to
+This branch is uploaded onto our deployment machine and unpacked in the
+same place the lastpage-server branch is unpacked. So be careful not to
 clobber anything!  (That's the reason this file is called README.deploy.)
 
-And yes, of course that's a sub-optimal approach. Packaging and properly
-installing lastpage-server is non-trivial, AFAICT.
+In order to deploy, you must locally have lastpage-server as a sibling
+directory. You can get it via
+
+  $ git clone git@github.com:fluidinfo/lastpage-server.git
+
+And yes, of course this is a sub-optimal approach. Packaging and properly
+installing lastpage-server on the deployment machine is non-trivial, AFAICT.
 
 ---
 

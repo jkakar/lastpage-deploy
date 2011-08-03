@@ -2,9 +2,8 @@
 This fabfile contains recipes for deploying and starting lastpage.me
 """
 from __future__ import with_statement
-from fabric.api import require, run, local, env, put
+from fabric.api import require, run, local, env, put, cd, settings
 from datetime import datetime
-from subprocess import Popen, PIPE
 
 
 def live():
@@ -14,17 +13,7 @@ def live():
     RELEASE = datetime.utcnow().strftime('%Y%m%d-%H%M%S')
     env.hosts = ['lastpage@lastpage.me']
     env.sitename = 'lastpage'
-    # revno = Popen(['bzr', 'revno'], stdout=PIPE).communicate()[0][:-1]
-    # env.tag = '%s-r%s-%s' % (env.sitename, revno, RELEASE)
-    env.tag = '%s-%s' % (env.sitename, RELEASE)
-
-
-def here():
-    """
-    Define localhost.
-    """
-    RELEASE = datetime.utcnow().strftime('%Y%m%d-%H%M%S')
-    env.sitename = 'lastpage'
+    # from subprocess import Popen, PIPE
     # revno = Popen(['bzr', 'revno'], stdout=PIPE).communicate()[0][:-1]
     # env.tag = '%s-r%s-%s' % (env.sitename, revno, RELEASE)
     env.tag = '%s-%s' % (env.sitename, RELEASE)
@@ -68,22 +57,34 @@ def upload():
     run('find %(tag)s -type d -print0 | xargs -0 chmod go+rx' % env)
 
 
-def configure_server():
+def stop_server():
     """
-    Link the newly uploaded deployment in the right place in the filesystem
-    and start the Twisted Lastpage server.
+    Stop any currently running lastpage server.
     """
     require('hosts', provided_by=[live])
-    run('rm -f current' % env)
+
+    print('Stopping lastpage server....')
+    with settings(warn_only=True):
+        result = run('cat current/var/run/lastpage.pid | xargs kill')
+        if result.failed:
+            print 'No lastpage server was running.'
+
+
+def _start_server():
+    """
+    Link the newly uploaded deployment in the right place in the filesystem
+    and start the Twisted Lastpage server.  Note that you cannot run this
+    command by itself, since 'tag' has to be set to an already uploaded
+    distribution.
+    """
+    require('hosts', provided_by=[live])
+    run('rm -f current')
     run('ln -s %(tag)s current' % env)
-
-    # I'm not sure that restart is right here. If it's not already running
-    # restart doesn't do anything. Better to do stop || true, then start?
-    # run('restart %(sitename)s' % env)
-
-    # For now we're starting Lastpage via a shell script. This will be
-    # changed to use upstart.
-    run('%(tag)s)/bin/run-lastpage.sh' % env)
+    with cd('current'):
+        # For now we're starting Lastpage via a shell script. This will be
+        # changed to use upstart.
+        # run('restart %(sitename)s' % env)
+        run('bin/run-lastpage.sh')
 
 
 def deploy():
@@ -91,4 +92,5 @@ def deploy():
     Wraps all the steps up to deploy to the live server.
     """
     upload()
-    configure_server()
+    stop_server()
+    _start_server()

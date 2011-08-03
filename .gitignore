@@ -1,2 +1,3 @@
 distribute-*.tar.gz
 lastpage-*-deploy.tar.bz2
+*.pyc
