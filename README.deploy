@@ -12,6 +12,13 @@ installing lastpage-server on the deployment machine is non-trivial, AFAICT.
 
 ---
 
+To deploy onto lastpage.me (once you have the lastpage-server project
+checked out in a sibling directory):
+
+$ fab live deploy
+
+---
+
 To create the lastpage user on the deploy machine:
 
 $ sudo adduser --home /srv/lastpage --disabled-password --disabled-login lastpage
