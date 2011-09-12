@@ -41,10 +41,10 @@ def upload():
     run('tar xjvf %(tag)s-deploy.tar.bz2' % env)
 
     # Create a virtualenv for the new distribution.
-    run('virtualenv --no-site-packages %(tag)s' % env)
+    run('virtualenv %(tag)s' % env)
 
     # Install requirements.
-    run('%(tag)s/bin/pip install --upgrade -r %(tag)s/requirements.txt' % env)
+    run('%(tag)s/bin/pip install -r %(tag)s/requirements.txt' % env)
 
     # Make var/{run,log} dirs for runtime files. Touch the log so its perms
     # get set correctly.

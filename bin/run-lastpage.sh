@@ -21,7 +21,8 @@ VIRTUALENV_HOME=/srv/lastpage/current
 LASTPAGE_USER=lastpage
 
 exec /sbin/start-stop-daemon --start --chdir $VIRTUALENV_HOME \
-    --chuid $LASTPAGE_USER --exec $VIRTUALENV_HOME/bin/twistd -- \
+    --chuid $LASTPAGE_USER --exec $VIRTUALENV_HOME/bin/python -- \
+    /usr/bin/twistd \
     --pidfile=/srv/lastpage/current/var/run/lastpage.pid \
     --logfile=/srv/lastpage/current/var/log/lastpage.log \
     lastpage \
