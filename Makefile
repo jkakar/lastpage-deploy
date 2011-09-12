@@ -2,7 +2,7 @@
 
 lint: pep8 pyflakes
 
-deploy: all
+deploy:
 	fab live deploy
 
 clean:
